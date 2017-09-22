@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>hello-api</artifactId>
+    <artifactId>gameon17s99-api</artifactId>
 
     <packaging>jar</packaging>
 

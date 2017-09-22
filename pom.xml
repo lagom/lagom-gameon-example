@@ -10,8 +10,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>hello-api</module>
-        <module>hello-impl</module>
+        <module>gameon17s99-api</module>
+        <module>gameon17s99-impl</module>
     </modules>
 
     <build>

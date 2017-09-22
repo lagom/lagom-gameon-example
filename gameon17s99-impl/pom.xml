@@ -9,14 +9,14 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>hello-impl</artifactId>
+    <artifactId>gameon17s99-impl</artifactId>
 
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>hello-api</artifactId>
+            <artifactId>gameon17s99-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
