@@ -23,6 +23,7 @@ import org.pcollections.PSequence;
 import org.pcollections.TreePVector;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import static com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnMessage.ParsedMessage;
@@ -49,6 +50,11 @@ public class GameOnRoomResponseSerializer implements
                 .plus(new AckFormat())
                 .plus(new PlayerResponseFormat())
                 .plus(new PlayerLocationResponseFormat());
+    }
+
+    @Override
+    public MessageProtocol protocol() {
+        return new MessageProtocol().withCharset("utf-8");
     }
 
     @Override
