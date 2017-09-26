@@ -23,7 +23,7 @@ public interface GameOnRoomRequest extends GameOnMessage {
         @NonNull String userId;
         @NonNull String content;
 
-        static class RoomCommandBuilder implements RoomRequestBuilder<RoomCommand> {
+        public static class RoomCommandBuilder implements RoomRequestBuilder<RoomCommand> {
             // Implemented automatically by Lombok
         }
     }
@@ -37,7 +37,7 @@ public interface GameOnRoomRequest extends GameOnMessage {
         int version;
         boolean recovery;
 
-        static class RoomHelloBuilder implements RoomRequestBuilder<RoomHello> {
+        public static class RoomHelloBuilder implements RoomRequestBuilder<RoomHello> {
             // Implemented automatically by Lombok
         }
     }
@@ -49,7 +49,7 @@ public interface GameOnRoomRequest extends GameOnMessage {
         @NonNull String username;
         @NonNull String userId;
 
-        static class RoomGoodbyeBuilder implements RoomRequestBuilder<RoomGoodbye> {
+        public static class RoomGoodbyeBuilder implements RoomRequestBuilder<RoomGoodbye> {
             // Implemented automatically by Lombok
         }
     }
@@ -62,7 +62,7 @@ public interface GameOnRoomRequest extends GameOnMessage {
         @NonNull String userId;
         int version;
 
-        static class RoomJoinBuilder implements RoomRequestBuilder<RoomJoin> {
+        public static class RoomJoinBuilder implements RoomRequestBuilder<RoomJoin> {
             // Implemented automatically by Lombok
         }
     }
@@ -74,7 +74,7 @@ public interface GameOnRoomRequest extends GameOnMessage {
         @NonNull String username;
         @NonNull String userId;
 
-        static class RoomPartBuilder implements RoomRequestBuilder<RoomPart> {
+        public static class RoomPartBuilder implements RoomRequestBuilder<RoomPart> {
             // Implemented automatically by Lombok
         }
     }

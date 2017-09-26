@@ -54,7 +54,7 @@ public interface GameOnRoomResponse extends GameOnMessage {
         @NonNull PMap<String, String> commands;
         @NonNull PSequence<String> roomInventory;
 
-        static class LocationBuilder implements PlayerResponseBuilder<Location> {
+        public static class LocationBuilder implements PlayerResponseBuilder<Location> {
             // Implemented automatically by Lombok
         }
     }
@@ -67,7 +67,7 @@ public interface GameOnRoomResponse extends GameOnMessage {
         @NonNull String content;
         @NonNull Optional<String> bookmark;
 
-        static class ChatBuilder implements PlayerResponseBuilder<Chat> {
+        public static class ChatBuilder implements PlayerResponseBuilder<Chat> {
             // Implemented automatically by Lombok
         }
     }
@@ -79,7 +79,7 @@ public interface GameOnRoomResponse extends GameOnMessage {
         @NonNull PMap<String, String> content;
         @NonNull Optional<String> bookmark;
 
-        static class EventBuilder implements PlayerResponseBuilder<Event> {
+        public static class EventBuilder implements PlayerResponseBuilder<Event> {
             // Implemented automatically by Lombok
         }
     }
@@ -111,7 +111,7 @@ public interface GameOnRoomResponse extends GameOnMessage {
         @NonNull String exitId;
         // exit not supported
 
-        static class ExitBuilder implements PlayerLocationResponseBuilder<Exit> {
+        public static class ExitBuilder implements PlayerLocationResponseBuilder<Exit> {
             // Implemented automatically by Lombok
         }
     }
