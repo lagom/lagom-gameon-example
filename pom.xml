@@ -17,6 +17,29 @@
     <build>
         <plugins>
             <plugin>
+          		<groupId>org.apache.maven.plugins</groupId>
+          		<artifactId>maven-antrun-plugin</artifactId>
+          		<version>1.7</version>
+          		<executions>
+          		    <execution>
+          		        <phase>validate</phase>
+          		        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo>Build target: ${buildTarget}</echo>
+                                <echo>Service Locator provided by: ${serviceLocator.provider.groupName}.${serviceLocator.provider.artifactName}:${serviceLocator.provider.artifactVersion}</echo>
+                            </target>
+                        </configuration>
+          		    </execution>
+          		</executions>
+          	</plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.6</version>
+            </plugin>
+            <plugin>
                 <groupId>com.lightbend.lagom</groupId>
                 <artifactId>lagom-maven-plugin</artifactId>
                 <version>${lagom.version}</version>
@@ -25,6 +48,7 @@
                     <kafkaEnabled>false</kafkaEnabled>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -55,6 +79,29 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.20.1</version>
+                <configuration>
+                    <skip>true</skip>
+                    <images>
+                        <image>
+                            <name>%g/%a:%l</name>
+                            <build>
+                                <from>openjdk:8-jre-alpine</from>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${project.version}</tag>
+                                </tags>
+                                <assembly>
+                                    <descriptorRef>artifact-with-dependencies</descriptorRef>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
             </plugin>
         </plugins>
     </build>
