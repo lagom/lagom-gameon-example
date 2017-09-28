@@ -16,6 +16,363 @@
         "http": {
           "paths": [
             {
+              "path": "/gameon17s00",
+              "backend": {
+                "serviceName": "gameon17s00",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s01",
+              "backend": {
+                "serviceName": "gameon17s01",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s02",
+              "backend": {
+                "serviceName": "gameon17s02",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s03",
+              "backend": {
+                "serviceName": "gameon17s03",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s04",
+              "backend": {
+                "serviceName": "gameon17s04",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s05",
+              "backend": {
+                "serviceName": "gameon17s05",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s06",
+              "backend": {
+                "serviceName": "gameon17s06",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s07",
+              "backend": {
+                "serviceName": "gameon17s07",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s08",
+              "backend": {
+                "serviceName": "gameon17s08",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s09",
+              "backend": {
+                "serviceName": "gameon17s09",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s10",
+              "backend": {
+                "serviceName": "gameon17s10",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s11",
+              "backend": {
+                "serviceName": "gameon17s11",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s12",
+              "backend": {
+                "serviceName": "gameon17s12",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s13",
+              "backend": {
+                "serviceName": "gameon17s13",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s14",
+              "backend": {
+                "serviceName": "gameon17s14",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s15",
+              "backend": {
+                "serviceName": "gameon17s15",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s16",
+              "backend": {
+                "serviceName": "gameon17s16",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s17",
+              "backend": {
+                "serviceName": "gameon17s17",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s18",
+              "backend": {
+                "serviceName": "gameon17s18",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s19",
+              "backend": {
+                "serviceName": "gameon17s19",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s20",
+              "backend": {
+                "serviceName": "gameon17s20",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s21",
+              "backend": {
+                "serviceName": "gameon17s21",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s22",
+              "backend": {
+                "serviceName": "gameon17s22",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s23",
+              "backend": {
+                "serviceName": "gameon17s23",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s24",
+              "backend": {
+                "serviceName": "gameon17s24",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s25",
+              "backend": {
+                "serviceName": "gameon17s25",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s26",
+              "backend": {
+                "serviceName": "gameon17s26",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s27",
+              "backend": {
+                "serviceName": "gameon17s27",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s28",
+              "backend": {
+                "serviceName": "gameon17s28",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s29",
+              "backend": {
+                "serviceName": "gameon17s29",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s30",
+              "backend": {
+                "serviceName": "gameon17s30",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s31",
+              "backend": {
+                "serviceName": "gameon17s31",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s32",
+              "backend": {
+                "serviceName": "gameon17s32",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s33",
+              "backend": {
+                "serviceName": "gameon17s33",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s34",
+              "backend": {
+                "serviceName": "gameon17s34",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s35",
+              "backend": {
+                "serviceName": "gameon17s35",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s36",
+              "backend": {
+                "serviceName": "gameon17s36",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s37",
+              "backend": {
+                "serviceName": "gameon17s37",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s38",
+              "backend": {
+                "serviceName": "gameon17s38",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s39",
+              "backend": {
+                "serviceName": "gameon17s39",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s40",
+              "backend": {
+                "serviceName": "gameon17s40",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s41",
+              "backend": {
+                "serviceName": "gameon17s41",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s42",
+              "backend": {
+                "serviceName": "gameon17s42",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s43",
+              "backend": {
+                "serviceName": "gameon17s43",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s44",
+              "backend": {
+                "serviceName": "gameon17s44",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s45",
+              "backend": {
+                "serviceName": "gameon17s45",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s46",
+              "backend": {
+                "serviceName": "gameon17s46",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s47",
+              "backend": {
+                "serviceName": "gameon17s47",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s48",
+              "backend": {
+                "serviceName": "gameon17s48",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s49",
+              "backend": {
+                "serviceName": "gameon17s49",
+                "servicePort": 9000
+              }
+            },
+            {
+              "path": "/gameon17s50",
+              "backend": {
+                "serviceName": "gameon17s50",
+                "servicePort": 9000
+              }
+            },
+            {
               "path": "/gameon17s99",
               "backend": {
                 "serviceName": "gameon17s99",
