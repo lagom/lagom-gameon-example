@@ -16,7 +16,7 @@
         "http": {
           "paths": [
             {
-              "path": "/api/gameon17s99",
+              "path": "/gameon17s99",
               "backend": {
                 "serviceName": "gameon17s99",
                 "servicePort": 9000
