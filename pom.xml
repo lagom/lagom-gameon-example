@@ -98,8 +98,25 @@
                 <version>1.16.18</version>
                 <scope>provided</scope>
             </dependency>
+            <!-- Service Locator Provider -->
+            <dependency>
+                <groupId>com.lightbend</groupId>
+                <artifactId>lagom-service-locator-dns_2.11</artifactId>
+                <version>1.0.2</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>akka-dns</id>
+            <name>akka-dns</name>
+            <url>https://dl.bintray.com/hajile/maven</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

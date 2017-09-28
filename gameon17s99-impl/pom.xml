@@ -35,6 +35,11 @@
             <groupId>com.typesafe.play</groupId>
             <artifactId>play-netty-server_2.11</artifactId>
         </dependency>
+        <!-- Service Locator Provider -->
+        <dependency>
+            <groupId>com.lightbend</groupId>
+            <artifactId>lagom-service-locator-dns_2.11</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.lightbend.lagom</groupId>
             <artifactId>lagom-javadsl-testkit_2.11</artifactId>
