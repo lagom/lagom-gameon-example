@@ -2,23 +2,23 @@
   "apiVersion": "apps/v1beta1",
   "kind": "StatefulSet",
   "metadata": {
-    "name": "gameonservice-99"
+    "name": "gameon17s99"
   },
   "spec": {
-    "serviceName": "gameonservice-99",
+    "serviceName": "gameon17s99",
     "replicas": 1,
     "template": {
       "metadata": {
         "labels": {
-          "app": "gameonservice-99"
+          "app": "gameon17s99"
         }
       },
       "spec": {
         "containers": [
           {
-            "name": "gameonservice-99",
-            "image": "gameon/gameon17s99-impl",
-            "imagePullPolicy": "Never",
+            "name": "gameon17s99",
+            "image": "javaone/gameon17s99-impl",
+            "imagePullPolicy": "Always",
             "ports": [
               {
                 "containerPort": 9000,
@@ -31,12 +31,8 @@
             ],
             "env": [
               {
-                "name": "CASSANDRA_SERVICE_NAME",
-                "value": "_native._tcp.cassandra.default.svc.cluster.local"
-              },
-              {
                 "name": "APPLICATION_SECRET",
-                "value": "gameonservice-99-application-secret"
+                "value": "gameon17s99-application-secret"
               },
               {
                 "name": "GAMEONSERVICE_BIND_PORT",
@@ -48,7 +44,7 @@
               },
               {
                 "name": "AKKA_ACTOR_SYSTEM_NAME",
-                "value": "gameonservice-99-v1"
+                "value": "gameon17s99-v1"
               },
               {
                 "name": "AKKA_REMOTING_BIND_PORT",
@@ -56,11 +52,11 @@
               },
               {
                 "name": "AKKA_REMOTING_BIND_HOST",
-                "value": "$HOSTNAME.gameonservice-99.default.svc.cluster.local"
+                "value": "$HOSTNAME.gameon17s99.default.svc.cluster.local"
               },
               {
                 "name": "AKKA_SEED_NODES",
-                "value": "gameonservice-99-0.gameonservice.default.svc.cluster.local:2551,gameonservice-99-1.gameonservice.default.svc.cluster.local:2551,gameonservice-99-2.gameonservice.default.svc.cluster.local:2551"
+                "value": "gameon17s99-0.gameonservice.default.svc.cluster.local:2551,gameon17s99-1.gameonservice.default.svc.cluster.local:2551,gameon17s99-2.gameonservice.default.svc.cluster.local:2551"
               },
               {
                 "name": "POD_NAME",

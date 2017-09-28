@@ -2,23 +2,23 @@
   "apiVersion": "extensions/v1beta1",
   "kind": "Ingress",
   "metadata": {
-    "name": "gameon-99-ingress",
+    "name": "gameon17s99-ingress",
     "annotations": {
       "ingress.kubernetes.io/ssl-redirect": "false"
     }
   },
   "spec": {
     "tls": [
-      { "secretName": "gameon-99-tls-secret" }
+      { "secretName": "gameon17s99-tls-secret" }
     ],
     "rules": [
       {
         "http": {
           "paths": [
             {
-              "path": "/api/gameon-99",
+              "path": "/api/gameon17s99",
               "backend": {
-                "serviceName": "gameonservice-99",
+                "serviceName": "gameon17s99",
                 "servicePort": 9000
               }
             }

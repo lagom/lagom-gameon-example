@@ -3,9 +3,9 @@
   "kind": "Service",
   "metadata": {
     "labels": {
-      "app": "gameonservice-99"
+      "app": "gameon17s99"
     },
-    "name": "gameonservice-99"
+    "name": "gameon17s99"
   },
   "spec": {
     "clusterIP": "None",
@@ -18,7 +18,7 @@
       }
     ],
     "selector": {
-      "app": "gameonservice-99"
+      "app": "gameon17s99"
     }
   }
 }
