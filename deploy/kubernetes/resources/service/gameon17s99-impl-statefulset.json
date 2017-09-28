@@ -56,7 +56,7 @@
               },
               {
                 "name": "AKKA_SEED_NODES",
-                "value": "gameon17s99-0.gameonservice.default.svc.cluster.local:2551,gameon17s99-1.gameonservice.default.svc.cluster.local:2551,gameon17s99-2.gameonservice.default.svc.cluster.local:2551"
+                "value": "gameon17s99-0.gameon17s99.default.svc.cluster.local:2551,gameon17s99-1.gameon17s99.default.svc.cluster.local:2551,gameon17s99-2.gameon17s99.default.svc.cluster.local:2551"
               },
               {
                 "name": "POD_NAME",
