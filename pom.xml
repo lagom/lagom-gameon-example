@@ -17,29 +17,6 @@
     <build>
         <plugins>
             <plugin>
-          		<groupId>org.apache.maven.plugins</groupId>
-          		<artifactId>maven-antrun-plugin</artifactId>
-          		<version>1.7</version>
-          		<executions>
-          		    <execution>
-          		        <phase>validate</phase>
-          		        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <echo>Build target: ${buildTarget}</echo>
-                                <echo>Service Locator provided by: ${serviceLocator.provider.groupName}.${serviceLocator.provider.artifactName}:${serviceLocator.provider.artifactVersion}</echo>
-                            </target>
-                        </configuration>
-          		    </execution>
-          		</executions>
-          	</plugin>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.6</version>
-            </plugin>
-            <plugin>
                 <groupId>com.lightbend.lagom</groupId>
                 <artifactId>lagom-maven-plugin</artifactId>
                 <version>${lagom.version}</version>
