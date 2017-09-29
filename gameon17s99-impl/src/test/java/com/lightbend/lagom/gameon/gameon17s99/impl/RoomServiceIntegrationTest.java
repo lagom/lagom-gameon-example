@@ -14,8 +14,7 @@ import com.lightbend.lagom.gameon.gameon17s99.api.RoomService;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest.*;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResponse;
-import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResponse.Chat;
-import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResponse.Location;
+import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResponse.*;
 import com.lightbend.lagom.javadsl.testkit.ServiceTest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -28,7 +27,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-import static com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResponse.*;
 import static com.lightbend.lagom.javadsl.testkit.ServiceTest.defaultSetup;
 import static com.lightbend.lagom.javadsl.testkit.ServiceTest.startServer;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -155,6 +153,72 @@ public class RoomServiceIntegrationTest {
                     .roomInventory(Room.INVENTORY)
                     .build();
             tester.expect(location);
+        }
+    }
+
+    @Test
+    public void respondsToValidGoCommandWithExit() throws Exception {
+        try (GameOnTester tester = new GameOnTester()) {
+            tester.expectAck();
+
+            RoomCommand goCommand = RoomCommand.builder()
+                    .roomId("<roomId>")
+                    .username("chatUser")
+                    .userId("<userId>")
+                    .content("/go N")
+                    .build();
+            tester.send(goCommand);
+
+            Exit northExit = Exit.builder()
+                    .playerId("<userId>")
+                    .content("You exit through a dark entranceway")
+                    .exitId("N")
+                    .build();
+            tester.expect(northExit);
+        }
+    }
+
+    @Test
+    public void respondsToGoCommandMissingDirectionWithAnErrorEvent() throws Exception {
+        try (GameOnTester tester = new GameOnTester()) {
+            tester.expectAck();
+
+            RoomCommand goCommand = RoomCommand.builder()
+                    .roomId("<roomId>")
+                    .username("chatUser")
+                    .userId("<userId>")
+                    .content("/go")
+                    .build();
+            tester.send(goCommand);
+
+            Event missingDirectionEvent = Event.builder()
+                    .playerId("<userId>")
+                    .content(HashTreePMap.singleton("<userId>", "Provide a direction to go (type '/exits' to see a list)"))
+                    .bookmark(Optional.empty())
+                    .build();
+            tester.expect(missingDirectionEvent);
+        }
+    }
+
+    @Test
+    public void respondsToGoCommandWithInvalidDirectionWithAnErrorEvent() throws Exception {
+        try (GameOnTester tester = new GameOnTester()) {
+            tester.expectAck();
+
+            RoomCommand goCommand = RoomCommand.builder()
+                    .roomId("<roomId>")
+                    .username("chatUser")
+                    .userId("<userId>")
+                    .content("/go Q")
+                    .build();
+            tester.send(goCommand);
+
+            Event missingDirectionEvent = Event.builder()
+                    .playerId("<userId>")
+                    .content(HashTreePMap.singleton("<userId>", "Unknown direction: Q (type '/exits' to see a list)"))
+                    .bookmark(Optional.empty())
+                    .build();
+            tester.expect(missingDirectionEvent);
         }
     }
 
