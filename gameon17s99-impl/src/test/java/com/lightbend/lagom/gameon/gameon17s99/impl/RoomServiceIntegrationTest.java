@@ -45,14 +45,14 @@ public class RoomServiceIntegrationTest {
     }
 
     @Test
-    public void shouldAckOnConnection() throws Exception {
+    public void sendsAckOnConnection() throws Exception {
         try (GameOnTester tester = new GameOnTester()) {
             tester.expectAck();
         }
     }
 
     @Test
-    public void shouldRespondToHelloWithLocation() throws Exception {
+    public void respondsToHelloWithLocation() throws Exception {
         try (GameOnTester tester = new GameOnTester()) {
             tester.expectAck();
 
