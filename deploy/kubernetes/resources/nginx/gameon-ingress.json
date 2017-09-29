@@ -2,14 +2,14 @@
   "apiVersion": "extensions/v1beta1",
   "kind": "Ingress",
   "metadata": {
-    "name": "gameon17s99-ingress",
+    "name": "gameon-ingress",
     "annotations": {
       "ingress.kubernetes.io/ssl-redirect": "false"
     }
   },
   "spec": {
     "tls": [
-      { "secretName": "gameon17s99-tls-secret" }
+      { "secretName": "gameon-tls-secret" }
     ],
     "rules": [
       {
