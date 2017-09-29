@@ -12,11 +12,9 @@ import akka.stream.testkit.javadsl.TestSink;
 import akka.stream.testkit.javadsl.TestSource;
 import com.lightbend.lagom.gameon.gameon17s99.api.RoomService;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest;
-import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest.RoomGoodbye;
-import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest.RoomHello;
-import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest.RoomJoin;
-import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest.RoomPart;
+import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest.*;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResponse;
+import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResponse.Chat;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResponse.Location;
 import com.lightbend.lagom.javadsl.testkit.ServiceTest;
 import org.junit.AfterClass;
@@ -24,6 +22,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import scala.concurrent.duration.FiniteDuration;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -128,6 +127,29 @@ public class RoomServiceIntegrationTest {
             tester.send(part);
 
             tester.expectNoResponse();
+        }
+    }
+
+    @Test
+    public void broadcastsChatMessages() throws Exception {
+        try (GameOnTester tester = new GameOnTester()) {
+            tester.expectAck();
+
+            RoomCommand chatMessage = RoomCommand.builder()
+                    .roomId("<roomId>")
+                    .username("chatUser")
+                    .userId("<userId>")
+                    .content("Hello, world")
+                    .build();
+            tester.send(chatMessage);
+
+            Chat chat = Chat.builder()
+                    .playerId(GameOnRoomResponse.PlayerResponse.ALL_PLAYERS)
+                    .username("chatUser")
+                    .content("Hello, world")
+                    .bookmark(Optional.empty())
+                    .build();
+            tester.expect(chat);
         }
     }
 
