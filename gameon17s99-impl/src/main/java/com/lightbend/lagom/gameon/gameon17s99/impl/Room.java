@@ -28,14 +28,19 @@ class Room extends AbstractActor {
 
     static final PMap<String, String> EXITS = HashTreePMap.<String, String>empty()
             .plus("N", "a dark entranceway")
-            .plus("S", "a heavy door");
+            .plus("S", "a heavy door")
+            .plus("E", "an iron gate")
+            .plus("W", "a beaded curtain");
 
-    static final PMap<String, String> COMMANDS = HashTreePMap.<String, String>empty()
-            .plus("/ping", "Does this work?");
+    static final PMap<String, String> COMMANDS = HashTreePMap.<String, String>empty();
+    // Add custom commands below:
+    //        .plus("/ping", "Does this work?");
+    // Each custom command will also need to be added to the handleCommand method.
 
-    static final PSequence<String> INVENTORY = TreePVector.<String>empty()
-            .plus("itemA")
-            .plus("itemB");
+    static final PSequence<String> INVENTORY = TreePVector.<String>empty();
+    // Add items below to include them in your room:
+    //        .plus("itemA")
+    //        .plus("itemB")
 
     private static final String EXIT_PREFIX = "You exit through ";
     private static final String EXIT_INSTRUCTIONS = " (type '/exits' to see a list)";
