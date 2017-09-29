@@ -12,13 +12,17 @@ import akka.stream.testkit.javadsl.TestSink;
 import akka.stream.testkit.javadsl.TestSource;
 import com.lightbend.lagom.gameon.gameon17s99.api.RoomService;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest;
+import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest.RoomGoodbye;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest.RoomHello;
+import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest.RoomJoin;
+import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest.RoomPart;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResponse;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResponse.Location;
 import com.lightbend.lagom.javadsl.testkit.ServiceTest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import scala.concurrent.duration.FiniteDuration;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -78,6 +82,55 @@ public class RoomServiceIntegrationTest {
         }
     }
 
+    @Test
+    public void acceptsGoodbyeQuietly() throws Exception {
+        try (GameOnTester tester = new GameOnTester()) {
+            tester.expectAck();
+
+            RoomGoodbye goodbye = RoomGoodbye.builder()
+                    .roomId("<roomId>")
+                    .username("<username>")
+                    .userId("<userId>")
+                    .build();
+            tester.send(goodbye);
+
+            tester.expectNoResponse();
+        }
+    }
+
+    @Test
+    public void acceptsJoinQuietly() throws Exception {
+        try (GameOnTester tester = new GameOnTester()) {
+            tester.expectAck();
+
+            RoomJoin join = RoomJoin.builder()
+                    .roomId("<roomId>")
+                    .username("<username>")
+                    .userId("<userId>")
+                    .version(2)
+                    .build();
+            tester.send(join);
+
+            tester.expectNoResponse();
+        }
+    }
+
+    @Test
+    public void acceptsPartQuietly() throws Exception {
+        try (GameOnTester tester = new GameOnTester()) {
+            tester.expectAck();
+
+            RoomPart part = RoomPart.builder()
+                    .roomId("<roomId>")
+                    .username("<username>")
+                    .userId("<userId>")
+                    .build();
+            tester.send(part);
+
+            tester.expectNoResponse();
+        }
+    }
+
     // This test utility encapsulates some of the messy Akka Streams TestKit
     // code and provides a simpler API that can be used from the tests.
     // Use it in a try-with-resources block to ensure the connections are closed.
@@ -126,6 +179,10 @@ public class RoomServiceIntegrationTest {
         void expect(GameOnRoomResponse response) {
             responseProbe.request(1);
             responseProbe.expectNext(response);
+        }
+
+        void expectNoResponse() {
+            responseProbe.expectNoMsg(FiniteDuration.create(2, SECONDS));
         }
 
         private <T> Function<TestPublisher.Probe<T>, TestPublisher.Probe<T>> captureRequestProbe(
