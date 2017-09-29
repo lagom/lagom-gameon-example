@@ -20,6 +20,7 @@ import com.lightbend.lagom.javadsl.testkit.ServiceTest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.pcollections.HashTreePMap;
 import scala.concurrent.duration.FiniteDuration;
 
 import java.util.Optional;
@@ -27,6 +28,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import static com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResponse.*;
 import static com.lightbend.lagom.javadsl.testkit.ServiceTest.defaultSetup;
 import static com.lightbend.lagom.javadsl.testkit.ServiceTest.startServer;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -157,6 +159,28 @@ public class RoomServiceIntegrationTest {
     }
 
     @Test
+    public void respondsToUnknownCommandWithAnErrorEvent() throws Exception {
+        try (GameOnTester tester = new GameOnTester()) {
+            tester.expectAck();
+
+            RoomCommand unknownCommand = RoomCommand.builder()
+                    .roomId("<roomId>")
+                    .username("chatUser")
+                    .userId("<userId>")
+                    .content("/unknownCommand")
+                    .build();
+            tester.send(unknownCommand);
+
+            Event unknownCommandEvent = Event.builder()
+                    .playerId("<userId>")
+                    .content(HashTreePMap.singleton("<userId>", "Unknown command: /unknownCommand"))
+                    .bookmark(Optional.empty())
+                    .build();
+            tester.expect(unknownCommandEvent);
+        }
+    }
+
+    @Test
     public void broadcastsChatMessages() throws Exception {
         try (GameOnTester tester = new GameOnTester()) {
             tester.expectAck();
@@ -170,7 +194,7 @@ public class RoomServiceIntegrationTest {
             tester.send(chatMessage);
 
             Chat chat = Chat.builder()
-                    .playerId(GameOnRoomResponse.PlayerResponse.ALL_PLAYERS)
+                    .playerId(PlayerResponse.ALL_PLAYERS)
                     .username("chatUser")
                     .content("Hello, world")
                     .bookmark(Optional.empty())
