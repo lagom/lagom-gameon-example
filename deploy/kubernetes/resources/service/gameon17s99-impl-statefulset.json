@@ -17,7 +17,7 @@
         "containers": [
           {
             "name": "gameon17s99",
-            "image": "javaone/gameon17s99-impl",
+            "image": "registry.ng.bluemix.net/javaone/gameon17s99-impl:1.0-SNAPSHOT",
             "imagePullPolicy": "Always",
             "ports": [
               {

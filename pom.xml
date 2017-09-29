@@ -65,7 +65,7 @@
                     <skip>true</skip>
                     <images>
                         <image>
-                            <name>%g/%a:%l</name>
+                            <name>javaone/%a:%l</name>
                             <build>
                                 <from>openjdk:8-jre-alpine</from>
                                 <tags>
