@@ -22,7 +22,7 @@ import static com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResp
 import static com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResponse.PlayerResponse;
 
 class Room extends AbstractActor {
-    static final String NAME = "Room name";
+    static final String NAME = "gameon17s99";
     static final String FULL_NAME = "Room's descriptive full name";
     static final String DESCRIPTION = "Lots of text about what the room looks like";
 
