@@ -131,6 +131,32 @@ public class RoomServiceIntegrationTest {
     }
 
     @Test
+    public void respondsToLookCommandWithLocation() throws Exception {
+        try (GameOnTester tester = new GameOnTester()) {
+            tester.expectAck();
+
+            RoomCommand lookCommand = RoomCommand.builder()
+                    .roomId("<roomId>")
+                    .username("chatUser")
+                    .userId("<userId>")
+                    .content("/look")
+                    .build();
+            tester.send(lookCommand);
+
+            Location location = Location.builder()
+                    .playerId("<userId>")
+                    .name(Room.NAME)
+                    .fullName(Room.FULL_NAME)
+                    .description(Room.DESCRIPTION)
+                    .exits(Room.EXITS)
+                    .commands(Room.COMMANDS)
+                    .roomInventory(Room.INVENTORY)
+                    .build();
+            tester.expect(location);
+        }
+    }
+
+    @Test
     public void broadcastsChatMessages() throws Exception {
         try (GameOnTester tester = new GameOnTester()) {
             tester.expectAck();
