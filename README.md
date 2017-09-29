@@ -4,8 +4,6 @@
 
 [Game On!](https://gameontext.org/) is both a sample microservices application, and a throwback text adventure brought to you by the WASdev team at IBM.
 
-TODO: Duncan & Erin please fill in with additional content as needed
-
 ## Deploying to Bluemix
 
 1.  Log in to Bluemix with the workshop email address you were provided:
