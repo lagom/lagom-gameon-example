@@ -12,7 +12,7 @@
     ```
 
     - You will be prompted for the email address and password. Enter these as provided to you.
-    - You will also be prompted to select an account. Enter "1".
+    - You will also be prompted to select an account. Choose the one provided to you.
 
 2.  Initialize the Bluemix Container Service plugin:
     ```
