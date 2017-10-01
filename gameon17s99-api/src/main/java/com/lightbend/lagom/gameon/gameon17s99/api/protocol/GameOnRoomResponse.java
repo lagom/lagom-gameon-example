@@ -70,17 +70,15 @@ public interface GameOnRoomResponse extends GameOnMessage {
         @Nonnull String name;
         @Nonnull String fullName;
         @Nonnull String description;
-        @Nonnull PMap<String, String> exits;
         @Nonnull PMap<String, String> commands;
         @Nonnull PSequence<String> roomInventory;
 
-        @java.beans.ConstructorProperties({"playerId", "name", "fullName", "description", "exits", "commands", "roomInventory"})
-        Location(String playerId, String name, String fullName, String description, PMap<String, String> exits, PMap<String, String> commands, PSequence<String> roomInventory) {
+        @java.beans.ConstructorProperties({"playerId", "name", "fullName", "description", "commands", "roomInventory"})
+        Location(String playerId, String name, String fullName, String description, PMap<String, String> commands, PSequence<String> roomInventory) {
             this.playerId = playerId;
             this.name = name;
             this.fullName = fullName;
             this.description = description;
-            this.exits = exits;
             this.commands = commands;
             this.roomInventory = roomInventory;
         }
@@ -100,9 +98,6 @@ public interface GameOnRoomResponse extends GameOnMessage {
         public String getDescription() {return this.description;}
 
         @Nonnull
-        public PMap<String, String> getExits() {return this.exits;}
-
-        @Nonnull
         public PMap<String, String> getCommands() {return this.commands;}
 
         @Nonnull
@@ -120,8 +115,6 @@ public interface GameOnRoomResponse extends GameOnMessage {
                 return false;
             if (this.getDescription() == null ? other.getDescription() != null : !this.getDescription().equals(other.getDescription()))
                 return false;
-            if (this.getExits() == null ? other.getExits() != null : !this.getExits().equals(other.getExits()))
-                return false;
             if (this.getCommands() == null ? other.getCommands() != null : !this.getCommands().equals(other.getCommands()))
                 return false;
             if (this.getRoomInventory() == null ? other.getRoomInventory() != null : !this.getRoomInventory().equals(other.getRoomInventory()))
@@ -136,20 +129,18 @@ public interface GameOnRoomResponse extends GameOnMessage {
             result = result * PRIME + (this.getName() == null ? 43 : this.getName().hashCode());
             result = result * PRIME + (this.getFullName() == null ? 43 : this.getFullName().hashCode());
             result = result * PRIME + (this.getDescription() == null ? 43 : this.getDescription().hashCode());
-            result = result * PRIME + (this.getExits() == null ? 43 : this.getExits().hashCode());
             result = result * PRIME + (this.getCommands() == null ? 43 : this.getCommands().hashCode());
             result = result * PRIME + (this.getRoomInventory() == null ? 43 : this.getRoomInventory().hashCode());
             return result;
         }
 
-        public String toString() {return "GameOnRoomResponse.Location(playerId=" + this.getPlayerId() + ", name=" + this.getName() + ", fullName=" + this.getFullName() + ", description=" + this.getDescription() + ", exits=" + this.getExits() + ", commands=" + this.getCommands() + ", roomInventory=" + this.getRoomInventory() + ")";}
+        public String toString() {return "GameOnRoomResponse.Location(playerId=" + this.getPlayerId() + ", name=" + this.getName() + ", fullName=" + this.getFullName() + ", description=" + this.getDescription() + ", commands=" + this.getCommands() + ", roomInventory=" + this.getRoomInventory() + ")";}
 
         public static class LocationBuilder implements PlayerResponseBuilder<Location> {
             private String playerId;
             private String name;
             private String fullName;
             private String description;
-            private PMap<String, String> exits;
             private PMap<String, String> commands;
             private PSequence<String> roomInventory;
 
@@ -175,11 +166,6 @@ public interface GameOnRoomResponse extends GameOnMessage {
                 return this;
             }
 
-            public LocationBuilder exits(PMap<String, String> exits) {
-                this.exits = exits;
-                return this;
-            }
-
             public LocationBuilder commands(PMap<String, String> commands) {
                 this.commands = commands;
                 return this;
@@ -191,10 +177,10 @@ public interface GameOnRoomResponse extends GameOnMessage {
             }
 
             public Location build() {
-                return new Location(playerId, name, fullName, description, exits, commands, roomInventory);
+                return new Location(playerId, name, fullName, description, commands, roomInventory);
             }
 
-            public String toString() {return "GameOnRoomResponse.Location.LocationBuilder(playerId=" + this.playerId + ", name=" + this.name + ", fullName=" + this.fullName + ", description=" + this.description + ", exits=" + this.exits + ", commands=" + this.commands + ", roomInventory=" + this.roomInventory + ")";}
+            public String toString() {return "GameOnRoomResponse.Location.LocationBuilder(playerId=" + this.playerId + ", name=" + this.name + ", fullName=" + this.fullName + ", description=" + this.description + ", commands=" + this.commands + ", roomInventory=" + this.roomInventory + ")";}
         }
     }
 

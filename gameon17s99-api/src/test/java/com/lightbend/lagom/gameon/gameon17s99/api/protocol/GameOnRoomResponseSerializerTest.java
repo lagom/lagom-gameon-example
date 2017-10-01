@@ -45,10 +45,6 @@ public class GameOnRoomResponseSerializerTest {
                 "    \"name\": \"Room name\",\n" +
                 "    \"fullName\": \"Room's descriptive full name\",\n" +
                 "    \"description\": \"Lots of text about what the room looks like\",\n" +
-                "    \"exits\": {\n" +
-                "        \"shortDirection\" : \"currentDescription for Player\",\n" +
-                "        \"N\" :  \"a dark entranceway\"\n" +
-                "    },\n" +
                 "    \"commands\": {\n" +
                 "        \"/custom\" : \"Description of what command does\"\n" +
                 "    },\n" +
@@ -61,9 +57,6 @@ public class GameOnRoomResponseSerializerTest {
                 "Room name",
                 "Room's descriptive full name",
                 "Lots of text about what the room looks like",
-                HashTreePMap.<String, String>empty()
-                        .plus("shortDirection", "currentDescription for Player")
-                        .plus("N", "a dark entranceway"),
                 HashTreePMap.singleton("/custom", "Description of what command does"),
                 TreePVector.<String>empty()
                         .plus("itemA")
@@ -148,9 +141,6 @@ public class GameOnRoomResponseSerializerTest {
                         "Room name",
                         "Room's descriptive full name",
                         "Lots of text about what the room looks like",
-                        HashTreePMap.<String, String>empty()
-                                .plus("shortDirection", "currentDescription for Player")
-                                .plus("N", "a dark entranceway"),
                         HashTreePMap.singleton("/custom", "Description of what command does"),
                         TreePVector.<String>empty()
                                 .plus("itemA")

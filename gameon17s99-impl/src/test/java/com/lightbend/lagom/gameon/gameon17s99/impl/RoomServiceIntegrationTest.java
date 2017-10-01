@@ -73,7 +73,6 @@ public class RoomServiceIntegrationTest {
                     .name(Room.NAME)
                     .fullName(Room.FULL_NAME)
                     .description(Room.DESCRIPTION)
-                    .exits(Room.EXITS)
                     .commands(Room.COMMANDS)
                     .roomInventory(Room.INVENTORY)
                     .build();
@@ -148,7 +147,6 @@ public class RoomServiceIntegrationTest {
                     .name(Room.NAME)
                     .fullName(Room.FULL_NAME)
                     .description(Room.DESCRIPTION)
-                    .exits(Room.EXITS)
                     .commands(Room.COMMANDS)
                     .roomInventory(Room.INVENTORY)
                     .build();
@@ -171,7 +169,7 @@ public class RoomServiceIntegrationTest {
 
             Exit northExit = Exit.builder()
                     .playerId("<userId>")
-                    .content("You exit through a dark entranceway")
+                    .content("You head north")
                     .exitId("N")
                     .build();
             tester.expect(northExit);
