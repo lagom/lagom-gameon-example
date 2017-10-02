@@ -3,6 +3,7 @@
  */
 package com.lightbend.lagom.gameon.gameon17s99.impl;
 
+import akka.Done;
 import akka.NotUsed;
 import akka.japi.function.Function;
 import akka.stream.javadsl.Source;
@@ -10,11 +11,14 @@ import akka.stream.testkit.TestPublisher;
 import akka.stream.testkit.TestSubscriber;
 import akka.stream.testkit.javadsl.TestSink;
 import akka.stream.testkit.javadsl.TestSource;
+import com.lightbend.lagom.gameon.bazaar.api.BazaarService;
+import com.lightbend.lagom.gameon.bazaar.api.ItemMessage;
 import com.lightbend.lagom.gameon.gameon17s99.api.RoomService;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest.*;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResponse;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResponse.*;
+import com.lightbend.lagom.javadsl.api.ServiceCall;
 import com.lightbend.lagom.javadsl.testkit.ServiceTest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -27,16 +31,24 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import static com.lightbend.lagom.javadsl.testkit.ServiceTest.bind;
 import static com.lightbend.lagom.javadsl.testkit.ServiceTest.defaultSetup;
 import static com.lightbend.lagom.javadsl.testkit.ServiceTest.startServer;
+import static java.util.concurrent.CompletableFuture.completedFuture;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class RoomServiceIntegrationTest {
     private static ServiceTest.TestServer server;
+    private static MockBazaar mockBazaar;
 
     @BeforeClass
     public static void setUp() {
-        server = startServer(defaultSetup());
+        mockBazaar = new MockBazaar();
+        server = startServer(defaultSetup().withConfigureBuilder(builder ->
+                builder.overrides(
+                        bind(BazaarService.class).toInstance(mockBazaar)
+                )
+        ));
     }
 
     @AfterClass
@@ -221,6 +233,29 @@ public class RoomServiceIntegrationTest {
     }
 
     @Test
+    public void getBazaarCommandCallsBazaarService() throws Exception {
+        mockBazaar.item = "books";
+        try (GameOnTester tester = new GameOnTester()) {
+            tester.expectAck();
+
+            RoomCommand getBazaarCommand = RoomCommand.builder()
+                    .roomId("<roomId>")
+                    .username("chatUser")
+                    .userId("<userId>")
+                    .content("/getBazaar")
+                    .build();
+            tester.send(getBazaarCommand);
+
+            Event bazaarContents = Event.builder()
+                    .playerId("<userId>")
+                    .content(HashTreePMap.singleton("<userId>", "Bazaar contained: books"))
+                    .bookmark(Optional.empty())
+                    .build();
+            tester.expect(bazaarContents);
+        }
+    }
+
+    @Test
     public void respondsToUnknownCommandWithAnErrorEvent() throws Exception {
         try (GameOnTester tester = new GameOnTester()) {
             tester.expectAck();
@@ -262,6 +297,23 @@ public class RoomServiceIntegrationTest {
                     .bookmark(Optional.empty())
                     .build();
             tester.expect(chat);
+        }
+    }
+
+    private static class MockBazaar implements BazaarService {
+        String item;
+
+        @Override
+        public ServiceCall<NotUsed, String> bazaar() {
+            return req -> completedFuture(item);
+        }
+
+        @Override
+        public ServiceCall<ItemMessage, Done> useItem() {
+            return req -> {
+                item = req.getMessage();
+                return completedFuture(Done.getInstance());
+            };
         }
     }
 
