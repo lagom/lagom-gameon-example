@@ -1,8 +1,11 @@
 package com.lightbend.lagom.gameon.gameon17s99.impl;
 
 import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.japi.pf.ReceiveBuilder;
+import com.lightbend.lagom.gameon.bazaar.api.BazaarService;
+import com.lightbend.lagom.gameon.bazaar.api.ItemMessage;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest.RoomCommand;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResponse;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResponse.Chat;
@@ -12,6 +15,8 @@ import org.pcollections.HashTreePMap;
 import org.pcollections.PMap;
 import org.pcollections.PSequence;
 import org.pcollections.TreePVector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -32,7 +37,9 @@ class Room extends AbstractActor {
             .plus("E", "east")
             .plus("W", "west");
 
-    static final PMap<String, String> COMMANDS = HashTreePMap.<String, String>empty();
+    static final PMap<String, String> COMMANDS = HashTreePMap.<String, String>empty()
+            .plus("/getBazaar", "Shows the item in the Bazaar")
+            .plus("/putBazaar", "Changes the item in the Bazaar");
     // Add custom commands below:
     //        .plus("/ping", "Does this work?");
     // Each custom command will also need to be added to the handleCommand method.
@@ -50,11 +57,15 @@ class Room extends AbstractActor {
 
     private static final Pattern COMMAND = Pattern.compile("\\A/(\\S+)\\s*(.*)\\Z");
 
-    static Props props() {
-        return Props.create(Room.class);
+    private final BazaarService bazaarService;
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    static Props props(BazaarService bazaarService) {
+        return Props.create(Room.class, bazaarService);
     }
 
-    Room() {
+    Room(BazaarService bazaarService) {
+        this.bazaarService = bazaarService;
         receive(ReceiveBuilder
                 .create()
                 .match(RoomHello.class, this::replyWithLocation)
@@ -73,7 +84,7 @@ class Room extends AbstractActor {
                 .commands(COMMANDS)
                 .roomInventory(INVENTORY)
                 .build();
-        reply(location);
+        reply(location, sender());
     }
 
     private void handleCommand(RoomCommand message) {
@@ -85,6 +96,12 @@ class Room extends AbstractActor {
                     break;
                 case "go":
                     handleGoCommand(message, command.get().argument);
+                    break;
+                case "getBazaar":
+                    handleGetBazaar(message);
+                    break;
+                case "putBazaar":
+                    handlePutBazaar(message, command.get().argument);
                     break;
                 default:
                     handleUnknownCommand(message);
@@ -109,7 +126,7 @@ class Room extends AbstractActor {
                 .commands(COMMANDS)
                 .roomInventory(INVENTORY)
                 .build();
-        reply(location);
+        reply(location, sender());
     }
 
     private void handleGoCommand(RoomCommand goCommand, String direction) {
@@ -121,7 +138,7 @@ class Room extends AbstractActor {
                         .exitId(direction)
                         .content(EXIT_PREFIX + exitDescription)
                         .build();
-                reply(exit);
+                reply(exit, sender());
             } else {
                 handleUnknownDirection(goCommand, direction);
             }
@@ -138,7 +155,7 @@ class Room extends AbstractActor {
                 ))
                 .bookmark(Optional.empty())
                 .build();
-        reply(unknownDirectionResponse);
+        reply(unknownDirectionResponse, sender());
     }
 
     private void handleMissingDirection(RoomCommand goCommand) {
@@ -149,7 +166,35 @@ class Room extends AbstractActor {
                 ))
                 .bookmark(Optional.empty())
                 .build();
-        reply(missingDirectionResponse);
+        reply(missingDirectionResponse, sender());
+    }
+
+    private void handleGetBazaar(RoomCommand getBazaarCommand) {
+        ActorRef sender = sender(); // capture sender() to use in a CompletionStage
+        bazaarService.bazaar().invoke().thenAccept(item -> {
+            Event getBazaarCommandResponse = Event.builder()
+                    .playerId(getBazaarCommand.getUserId())
+                    .content(HashTreePMap.singleton(
+                            getBazaarCommand.getUserId(), "Bazaar contained: " + item
+                    ))
+                    .bookmark(Optional.empty())
+                    .build();
+            reply(getBazaarCommandResponse, sender);
+        });
+    }
+
+    private void handlePutBazaar(RoomCommand putBazaarCommand, String item) {
+        ActorRef sender = sender(); // capture sender() to use in a CompletionStage
+        bazaarService.useItem().invoke(new ItemMessage(item)).thenAccept(done -> {
+            Event putBazaarCommandResponse = Event.builder()
+                    .playerId(putBazaarCommand.getUserId())
+                    .content(HashTreePMap.singleton(
+                            putBazaarCommand.getUserId(), "Put " + item + " into the Bazaar"
+                    ))
+                    .bookmark(Optional.empty())
+                    .build();
+            reply(putBazaarCommandResponse, sender);
+        });
     }
 
     private void handleUnknownCommand(RoomCommand unknownCommand) {
@@ -160,7 +205,7 @@ class Room extends AbstractActor {
                 ))
                 .bookmark(Optional.empty())
                 .build();
-        reply(unknownCommandResponse);
+        reply(unknownCommandResponse, sender());
     }
 
     private void handleChat(RoomCommand chatCommand) {
@@ -170,11 +215,11 @@ class Room extends AbstractActor {
                 .content(chatCommand.getContent())
                 .bookmark(Optional.empty())
                 .build();
-        reply(chatResponse);
+        reply(chatResponse, sender());
     }
 
-    private void reply(GameOnRoomResponse response) {
-        sender().tell(response, self());
+    private void reply(GameOnRoomResponse response, ActorRef sender) {
+        sender.tell(response, self());
     }
 
     private static class Command {

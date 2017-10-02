@@ -8,6 +8,7 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.stream.javadsl.Source;
 import akka.util.Timeout;
+import com.lightbend.lagom.gameon.bazaar.api.BazaarService;
 import com.lightbend.lagom.gameon.gameon17s99.api.RoomService;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomResponse;
@@ -31,8 +32,8 @@ public class RoomServiceImpl implements RoomService {
     private final ActorRef roomActor;
 
     @Inject
-    public RoomServiceImpl(ActorSystem system) {
-        roomActor = system.actorOf(Room.props(), "room");
+    public RoomServiceImpl(ActorSystem system, BazaarService bazaarService) {
+        roomActor = system.actorOf(Room.props(bazaarService), "room");
     }
 
     @Override

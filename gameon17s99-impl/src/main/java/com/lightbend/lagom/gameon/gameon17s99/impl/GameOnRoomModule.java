@@ -4,6 +4,7 @@
 package com.lightbend.lagom.gameon.gameon17s99.impl;
 
 import com.google.inject.AbstractModule;
+import com.lightbend.lagom.gameon.bazaar.api.BazaarService;
 import com.lightbend.lagom.gameon.gameon17s99.api.RoomService;
 import com.lightbend.lagom.javadsl.server.ServiceGuiceSupport;
 
@@ -14,5 +15,6 @@ public class GameOnRoomModule extends AbstractModule implements ServiceGuiceSupp
     @Override
     protected void configure() {
         bindService(RoomService.class, RoomServiceImpl.class);
+        bindClient(BazaarService.class);
     }
 }
