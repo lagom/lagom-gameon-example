@@ -73,7 +73,7 @@ See the `README.md` file in that repository for more information.
 
 ** Your room is up!**
 
-Do a quick verification: http://gameon.us-south.containers.mybluemix.net/gameon17s99
+Do a quick verification: http://169.60.34.197/gameon17s99
 
 ## Register your room
 
@@ -91,9 +91,9 @@ Do a quick verification: http://gameon.us-south.containers.mybluemix.net/gameon1
 
 7. The repository field is optional. Come back and fill it in if you decide to push this into a public repository.
 
-8.  Specify the http endpoint as a basic health endpoint: `http://gameon.us-south.containers.mybluemix.net/gameon17s99`
+8.  Specify the http endpoint as a basic health endpoint: `http://169.60.34.197/gameon17s99`
 
-9.  Use a WebSocket URL for the WebSocket endpoint: `ws://gameon.us-south.containers.mybluemix.net/gameon17s99`
+9.  Use a WebSocket URL for the WebSocket endpoint: `ws://169.60.34.197/gameon17s99`
 
 10. Leave the token blank for now. That is an [Advanced adventure](https://book.gameontext.org/walkthroughs/createMore.html) for another time.
 
