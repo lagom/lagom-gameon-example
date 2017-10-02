@@ -10,16 +10,16 @@ import static com.lightbend.lagom.javadsl.api.Service.named;
 import static com.lightbend.lagom.javadsl.api.Service.pathCall;
 
 public interface BazaarService extends Service {
-    ServiceCall<NotUsed, String> bazaar(String id);
+    ServiceCall<NotUsed, String> bazaar();
 
-    ServiceCall<ItemMessage, Done> useItem(String id);
+    ServiceCall<ItemMessage, Done> useItem();
 
     @Override
     default Descriptor descriptor() {
         return named("bazaar")
                 .withCalls(
-                        pathCall("/api/bazaar/:id", this::bazaar),
-                        pathCall("/api/bazaar/:id", this::useItem)
+                        pathCall("/api/bazaar", this::bazaar),
+                        pathCall("/api/bazaar", this::useItem)
                 );
     }
 }

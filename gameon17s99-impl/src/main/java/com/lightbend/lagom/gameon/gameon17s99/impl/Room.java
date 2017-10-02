@@ -82,8 +82,10 @@ class Room extends AbstractActor {
             switch (command.get().name) {
                 case "look":
                     handleLookCommand(message);
+                    break;
                 case "go":
                     handleGoCommand(message, command.get().argument);
+                    break;
                 default:
                     handleUnknownCommand(message);
             }
