@@ -110,8 +110,9 @@
 
         <lagom.version>1.3.8</lagom.version>
     </properties>
-  <modules>
-    <module>gameon17s99-api</module>
-    <module>gameon17s99-impl</module>
-  </modules>
+    <modules>
+        <module>gameon17s99-api</module>
+        <module>gameon17s99-impl</module>
+        <module>bazaar-api</module>
+    </modules>
 </project>
