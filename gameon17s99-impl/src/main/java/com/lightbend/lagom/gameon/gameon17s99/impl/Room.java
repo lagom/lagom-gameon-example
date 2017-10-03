@@ -1,6 +1,7 @@
 package com.lightbend.lagom.gameon.gameon17s99.impl;
 
 import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.japi.pf.ReceiveBuilder;
 import com.lightbend.lagom.gameon.gameon17s99.api.protocol.GameOnRoomRequest.RoomCommand;
@@ -73,7 +74,7 @@ class Room extends AbstractActor {
                 .commands(COMMANDS)
                 .roomInventory(INVENTORY)
                 .build();
-        reply(location);
+        reply(location, sender());
     }
 
     private void handleCommand(RoomCommand message) {
@@ -109,7 +110,7 @@ class Room extends AbstractActor {
                 .commands(COMMANDS)
                 .roomInventory(INVENTORY)
                 .build();
-        reply(location);
+        reply(location, sender());
     }
 
     private void handleGoCommand(RoomCommand goCommand, String direction) {
@@ -121,7 +122,7 @@ class Room extends AbstractActor {
                         .exitId(direction)
                         .content(EXIT_PREFIX + exitDescription)
                         .build();
-                reply(exit);
+                reply(exit, sender());
             } else {
                 handleUnknownDirection(goCommand, direction);
             }
@@ -138,7 +139,7 @@ class Room extends AbstractActor {
                 ))
                 .bookmark(Optional.empty())
                 .build();
-        reply(unknownDirectionResponse);
+        reply(unknownDirectionResponse, sender());
     }
 
     private void handleMissingDirection(RoomCommand goCommand) {
@@ -149,7 +150,7 @@ class Room extends AbstractActor {
                 ))
                 .bookmark(Optional.empty())
                 .build();
-        reply(missingDirectionResponse);
+        reply(missingDirectionResponse, sender());
     }
 
     private void handleUnknownCommand(RoomCommand unknownCommand) {
@@ -160,7 +161,7 @@ class Room extends AbstractActor {
                 ))
                 .bookmark(Optional.empty())
                 .build();
-        reply(unknownCommandResponse);
+        reply(unknownCommandResponse, sender());
     }
 
     private void handleChat(RoomCommand chatCommand) {
@@ -170,10 +171,10 @@ class Room extends AbstractActor {
                 .content(chatCommand.getContent())
                 .bookmark(Optional.empty())
                 .build();
-        reply(chatResponse);
+        reply(chatResponse, sender());
     }
 
-    private void reply(GameOnRoomResponse response) {
+    private void reply(GameOnRoomResponse response, ActorRef sender) {
         sender().tell(response, self());
     }
 

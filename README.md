@@ -168,7 +168,7 @@ That isn't very original now, is it? For a first kick of the tires, let's make t
 
 6. To make our updated Room service live, we just need to delete the pod and let Kubernetes recreate it. The 'always' image pull policy ensures that Kubernetes will grab the latest Docker image when it recreates the pod.
     ```
-    kubectl delete pod gameon17s99
+    kubectl delete pod gameon17s99-0
     ```
 
 7. Wait for the service to begin running:
@@ -186,7 +186,8 @@ Let's now walk through making a simple custom command: `/ping`
 1. Open your Room implementation in your editor again (if you happened to close your IDE in the meanwhile, remember it is `com/lightbend/lagom/gameon/gameon17s99/impl/Room.java` under `src/main/java` in the `gameon17s99-impl` project).
 
 2. Around line 37 is a `/ping` command. You'll need to uncomment that line, and remove the semi-colon ahead of it to add the `/ping` command to the list of commands known to your room. It should look something like this (clean it up more if you'd like):
-    ```
+
+    ```java
     static final PMap<String, String> COMMANDS = HashTreePMap.<String, String>empty()
     // Add custom commands below:
         .plus("/ping", "Does this work?");
@@ -194,14 +195,16 @@ Let's now walk through making a simple custom command: `/ping`
     ```
 
 3. That comment above helpfully tells us what to edit next. Let's find the `handleCommand` method. It is lurking somewhere around line 79. The `parseCommand` method has removed the leading slash from the command, so we only have to look for "ping". Add something like this to the switch statement:
-    ```
+
+    ```java
     case "ping":
         handlePingCommand(message, command.get().argument);
         break;
     ```
 
 4. Now we have to define the new method. To take best advantage of cut and paste and place it near things that are alike, we'll put it by `handleUnknownCommand`, near line 166. In fact, let's just cut and paste the handleUnknownCommand method, and change the name and arguments:
-    ```
+
+    ```java
     private void handlePingCommand(RoomCommand pingCommand, String argument) {
         Event pingCommandResponse = Event.builder()
                 .playerId(pingCommand.getUserId())
@@ -219,7 +222,8 @@ Let's now walk through making a simple custom command: `/ping`
     * Target all players using `*`
     * Add two entries to the content map, one for the player, and one for everyone else.
     All told, it should look something like this:
-    ```
+
+    ```java
     Event pingCommandResponse = Event.builder()
             .playerId(ALL_PLAYERS)
             .content(HashTreePMap.<String, String>empty()
@@ -230,7 +234,8 @@ Let's now walk through making a simple custom command: `/ping`
     ```
 
 5. Now lets go to the top to define those constants (near line 50).
-    ```
+
+    ```java
     private static final String ALL_PLAYERS = "*";
     private static final String PINGPONG = " is playing pingpong";
     private static final String PONG = "pong: ";
@@ -238,8 +243,7 @@ Let's now walk through making a simple custom command: `/ping`
 
 7. There should be no compilation errors (as reported by your IDE) at this point. Let's try adding a test to make sure this works. Open `com/lightbend/lagom/gameon/gameon17s99/impl/RoomServiceIntegrationTest.java` under `src/test/java` in the `gameon17s99-impl` project). We'll add our new test as a neighbor to the test for the Unknown command again, which is somewhere around line 244. Add a test method that looks something like the following. Note that we've typed more explicitly what we expect to be in the message.
 
-    ```
-
+    ```java
     @Test
     public void broadcastsPingCommands() throws Exception {
         try (GameOnTester tester = new GameOnTester()) {
@@ -273,3 +277,92 @@ Let's now walk through making a simple custom command: `/ping`
     kubectl delete pod gameon17s99 && kubectl get -w pod gameon17s99-0
     ```
 
+
+## Accessing the Bazaar Service
+
+
+1. Add bazaar `api` as a dependency to your `impl` project.
+
+2. In the `GameOnRoomModule` implement the client interface
+
+  ```java
+  bindClient(Bazaar.Service.class);
+  ```
+
+  This will make an instance of the Bazaar service injectable via Guice.
+
+3. In the `RoomServiceImpl` constructor add parameter `BazaarService bazaarService`. This makes the service available to the implementation.
+
+4. In the `RoomServiceImpl` actor creation, add the `bazaarService` as a parameter.
+
+5. In `Room.java` add a `private final` for `bazaarService` of type `BazaarService`.
+
+6. In `Room.java` update the actor props with `bazaarService` as a parameter.
+
+7. Add `bazaarService` to the `Room` objects constructor.
+
+8. Set the local `bazaarService` value upon `Room` construction.
+
+
+## GameOn commands to access the Bazaar Service
+
+
+1. In `Room.java` update the `PMap` to included `GameOn` commands for getting and putting an item to the bazaar.
+
+  ```java
+  .plus(“/getBazaar”, “Descriptive text goes here”)
+  .plus(“/putBazaar”, “Descriptive text goes here”);
+  ```
+
+2. In `Room.java`, in the `handleCommand` method add cases to handle new commands.
+
+  ```java
+	case: “getBazaar”:
+      handleGetBazaar(message);
+      break;
+	case: “putBazaar”:
+      handlePutBazaar(message, command.get().arguments);
+      break;
+  ```
+
+3. In `Room.java` implement methods `handleGetBazaar` and `handlePutBazaar` similar to the way you implemented the `ping` command.
+
+
+## Sample handleGetBazaar
+
+
+```java
+private void handleGetBazaar(RoomCommand getBazaarCommand) {
+    ActorRef sender = sender(); // capture sender() to use in a CompletionStage
+    bazaarService.bazaar().invoke().thenAccept(item -> {
+        Event getBazaarCommandResponse = Event.builder()
+            .playerId(getBazaarCommand.getUserId())
+            .content(HashTreePMap.singleton(
+                getBazaarCommand.getUserId(), "Bazaar contained: " + item
+            ))
+            .bookmark(Optional.empty())
+            .build();
+            reply(getBazaarCommandResponse, sender);
+    });
+}
+```
+
+
+## Sample handlePutBazaar
+
+
+```java
+private void handlePutBazaar(RoomCommand putBazaarCommand, String item) {
+    ActorRef sender = sender(); // capture sender() to use in a CompletionStage
+    bazaarService.useItem().invoke(new ItemMessage(item)).thenAccept(done -> {
+        Event putBazaarCommandResponse = Event.builder()
+            .playerId(putBazaarCommand.getUserId())
+            .content(HashTreePMap.singleton(
+                putBazaarCommand.getUserId(), "Put " + item + " into the Bazaar"
+            ))
+            .bookmark(Optional.empty())
+            .build();
+            reply(putBazaarCommandResponse, sender);
+    });
+}
+```
